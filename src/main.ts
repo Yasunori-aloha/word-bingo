@@ -37,13 +37,13 @@ const setWordsAndCells = (inputs: string[]): [number, string[], WordCells] => {
   inputs = inputs.slice(1);
 
   // ビンゴ内各列の単語を取得し、『単語』をキーとしたオブジェクトに格納
-  const wordCells: WordCells = [...Array(bingoSize)].reduce((_, i) => {
-    return inputs[i].split(" ").map((word) => {
-      return {
-        word: new WordCell(word),
-      };
-    });
-  });
+  const wordCells: WordCells = [...Array(bingoSize)].reduce((acc, _, i) => {
+    const rowWords = inputs[i].split(" ");
+
+    rowWords.forEach((word) => (acc[word] = new WordCell()));
+
+    return acc;
+  }, {});
   inputs = inputs.slice(bingoSize);
 
   // 選ばれた単語数を取得
