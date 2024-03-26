@@ -1,4 +1,5 @@
 import { WordCell } from "./class/wordCell";
+import { WordCells } from "./types/wordCells";
 
 /**
  * メイン処理
@@ -23,23 +24,19 @@ const main = (inputs: string[]): void => {
  * @param inputs 標準入力データ
  * @returns [選ばれた単語群の配列, ビンゴの単語群]
  */
-const setWordsAndCells = (
-  inputs: string[]
-): [string[], Record<string, WordCell>] => {
+const setWordsAndCells = (inputs: string[]): [string[], WordCells] => {
   // ビンゴゲームのサイズを取得
   const bingoSize: number = parseInt(inputs[0]);
   inputs = inputs.slice(1);
 
   // ビンゴ内各列の単語を取得し、『単語』をキーとしたオブジェクトに格納
-  const wordCells: Record<string, WordCell> = [...Array(bingoSize)].reduce(
-    (_, i) => {
-      return inputs[i].split(" ").map((word) => {
-        return {
-          word: new WordCell(word),
-        };
-      });
-    }
-  );
+  const wordCells: WordCells = [...Array(bingoSize)].reduce((_, i) => {
+    return inputs[i].split(" ").map((word) => {
+      return {
+        word: new WordCell(word),
+      };
+    });
+  });
   inputs = inputs.slice(bingoSize);
 
   // 選ばれた単語数を取得
@@ -59,10 +56,7 @@ const setWordsAndCells = (
  * @param inputs 選ばれた単語の配列
  * @param wordCells ビンゴ内にある複数の単語マス
  */
-const openCells = (
-  choiceWords: string[],
-  wordCells: Record<string, WordCell>
-): void => {
+const openCells = (choiceWords: string[], wordCells: WordCells): void => {
   choiceWords.forEach((choiceWord) => {
     const wordcell = wordCells[choiceWord];
 
