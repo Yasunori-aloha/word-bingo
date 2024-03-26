@@ -5,7 +5,27 @@ import { WordCell } from "./class/wordCell";
  * ここで『ワードビンゴ』の処理を実施する。
  * @param inputs 標準入力データの配列(改行区切り)
  */
-const main = (inputs: string[]) => {
+const main = (inputs: string[]): void => {
+  // 選ばれた単語群とビンゴの単語群を準備
+  const [choiceWords, wordCells] = setWordsAndCells(inputs);
+
+  // 選ばれた単語群を基にビンゴのマス開け
+  openCells(choiceWords, wordCells);
+
+  // ビンゴしているか判定
+
+  // ビンゴ結果を出力
+};
+
+/**
+ * 標準入力から必要データを準備する。
+ *
+ * @param inputs 標準入力データ
+ * @returns [選ばれた単語群の配列, ビンゴの単語群]
+ */
+const setWordsAndCells = (
+  inputs: string[]
+): [string[], Record<string, WordCell>] => {
   // ビンゴゲームのサイズを取得
   const bingoSize: number = parseInt(inputs[0]);
   inputs = inputs.slice(1);
@@ -26,12 +46,10 @@ const main = (inputs: string[]) => {
   const choiceWordCount: number = parseInt(inputs[0]);
   inputs = inputs.slice(1);
 
-  // 選ばれた単語群を基にビンゴのマス開け
-  openCells(choiceWordCount, inputs, wordCells);
+  // 選ばれた単語群を配列に格納
+  const choiceWords = [...Array(choiceWordCount)].map((_, i) => inputs[i]);
 
-  // ビンゴしているか判定
-
-  // ビンゴ結果を出力
+  return [choiceWords, wordCells];
 };
 
 /**
@@ -42,12 +60,10 @@ const main = (inputs: string[]) => {
  * @param wordCells ビンゴ内にある複数の単語マス
  */
 const openCells = (
-  choiceWordCount: number,
-  inputs: string[],
+  choiceWords: string[],
   wordCells: Record<string, WordCell>
 ): void => {
-  [...Array(choiceWordCount)].forEach((_, i) => {
-    const choiceWord = inputs[i];
+  choiceWords.forEach((choiceWord) => {
     const wordcell = wordCells[choiceWord];
 
     if (!wordcell) return;
