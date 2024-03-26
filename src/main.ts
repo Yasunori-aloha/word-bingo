@@ -1,3 +1,5 @@
+import { WordCell } from "./class/wordCell";
+
 /**
  * メイン処理
  * ここで『ワードビンゴ』の処理を実施する。
@@ -5,8 +7,25 @@
  */
 const main = (inputs: string[]) => {
   // ビンゴゲームのサイズを取得
+  const bingoSize: number = parseInt(inputs[0]);
+  inputs = inputs.slice(1);
+
   // ビンゴ内各列の単語を取得し、『単語』をキーとしたオブジェクトに格納
+  const wordCells: Record<string, WordCell> = [...Array(bingoSize)].reduce(
+    (_, i) => {
+      return inputs[i].split(" ").map((word) => {
+        return {
+          word: new WordCell(word),
+        };
+      });
+    }
+  );
+  inputs = inputs.slice(bingoSize);
+
   // 選ばれた単語数を取得
+  const choiceWordCount: number = parseInt(inputs[0]);
+  inputs = inputs.slice(1);
+
   // 選ばれた単語群を基にビンゴのマス開け
   // ビンゴしているか判定
   // ビンゴ結果を出力
