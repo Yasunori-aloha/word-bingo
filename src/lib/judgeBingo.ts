@@ -22,31 +22,20 @@ export const judgeBingo = (
   });
 
   // 横(列)の確認 ※ビンゴしている列があるなら後続処理を中断
-  if (judgeRowBingo(bingoSize, wordCellsGrid)) return true;
+  if (
+    judgeBingoInVerticalAndHorizontal(bingoSize, (i, j) =>
+      wordCellsGrid[i][j].getIsOpen()
+    )
+  )
+    return true;
 
-  // 縦(行)の確認
-  let isColumnBingo = false;
-  for (let j = 0; j < bingoSize; j++) {
-    let isBingo = true;
-    for (let i = 0; i < bingoSize; i++) {
-      const wordCell = wordCellsGrid[i][j];
-
-      // 現在の行に開いていないマスがあるなら、その行はビンゴしないと判断する
-      if (!wordCell.getIsOpen()) {
-        isBingo = false;
-        break;
-      }
-    }
-
-    // 現在の行がビンゴなら、後続行は処理を中断
-    if (isBingo) {
-      isColumnBingo = true;
-      break;
-    }
-  }
-
-  // ビンゴしている行があるなら後続処理を中断
-  if (isColumnBingo) return true;
+  // 縦(行)の確認 ※ビンゴしている列があるなら後続処理を中断
+  if (
+    judgeBingoInVerticalAndHorizontal(bingoSize, (i, j) =>
+      wordCellsGrid[j][i].getIsOpen()
+    )
+  )
+    return true;
 
   // 主対角線(左上から右下への斜め)の確認
   let isMainDiagonalBingo = true;
@@ -75,14 +64,21 @@ export const judgeBingo = (
   return isAntiDiagonalBingo;
 };
 
-const judgeRowBingo = (bingoSize: number, wordCellsGrid: WordCell[][]) => {
+/**
+ * 縦・横のどこか１列分の単語マスを確認し、ビンゴしているか判定。
+ *
+ * @param bingoSize ビンゴの大きさ
+ * @param wordCellIsOpen 単語マスが空いているかどうか
+ */
+const judgeBingoInVerticalAndHorizontal = (
+  bingoSize: number,
+  wordCellIsOpen: (i: number, j: number) => boolean
+) => {
   for (let i = 0; i < bingoSize; i++) {
     let isBingo = true;
     for (let j = 0; j < bingoSize; j++) {
-      const wordCell = wordCellsGrid[i][j];
-
-      // 現在の列に開いていないマスがあるなら、その列はビンゴしないと判断する
-      if (!wordCell.getIsOpen()) {
+      // 1列の中で開いていないマスがあるなら、その列はビンゴしないと判断する
+      if (!wordCellIsOpen(i, j)) {
         isBingo = false;
         break;
       }
