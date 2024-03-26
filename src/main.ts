@@ -27,8 +27,33 @@ const main = (inputs: string[]) => {
   inputs = inputs.slice(1);
 
   // 選ばれた単語群を基にビンゴのマス開け
+  openCells(choiceWordCount, inputs, wordCells);
+
   // ビンゴしているか判定
+
   // ビンゴ結果を出力
+};
+
+/**
+ * 単語マスの開封処理
+ * ※選ばれた単語がビンゴ内にある場合のみ
+ *
+ * @param inputs 選ばれた単語の配列
+ * @param wordCells ビンゴ内にある複数の単語マス
+ */
+const openCells = (
+  choiceWordCount: number,
+  inputs: string[],
+  wordCells: Record<string, WordCell>
+): void => {
+  [...Array(choiceWordCount)].forEach((_, i) => {
+    const choiceWord = inputs[i];
+    const wordcell = wordCells[choiceWord];
+
+    if (!wordcell) return;
+
+    wordcell.cellOpen();
+  });
 };
 
 /**
