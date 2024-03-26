@@ -1,3 +1,4 @@
+import { WordCell } from "../class/wordCell";
 import { WordCells } from "../types/wordCells";
 
 /**
@@ -20,29 +21,8 @@ export const judgeBingo = (
     return wordCellArray.slice(startIndex, endIndex);
   });
 
-  // 横(列)の確認
-  let isRowBingo = false;
-  for (let i = 0; i < bingoSize; i++) {
-    let isBingo = true;
-    for (let j = 0; j < bingoSize; j++) {
-      const wordCell = wordCellsGrid[i][j];
-
-      // 現在の列に開いていないマスがあるなら、その列はビンゴしないと判断する
-      if (!wordCell.getIsOpen()) {
-        isBingo = false;
-        break;
-      }
-    }
-
-    // 現在の列がビンゴなら、後続列は処理を中断
-    if (isBingo) {
-      isRowBingo = true;
-      break;
-    }
-  }
-
-  // ビンゴしている列があるなら後続処理を中断
-  if (isRowBingo) return true;
+  // 横(列)の確認 ※ビンゴしている列があるなら後続処理を中断
+  if (judgeRowBingo(bingoSize, wordCellsGrid)) return true;
 
   // 縦(行)の確認
   let isColumnBingo = false;
@@ -93,4 +73,23 @@ export const judgeBingo = (
   }
 
   return isAntiDiagonalBingo;
+};
+
+const judgeRowBingo = (bingoSize: number, wordCellsGrid: WordCell[][]) => {
+  for (let i = 0; i < bingoSize; i++) {
+    let isBingo = true;
+    for (let j = 0; j < bingoSize; j++) {
+      const wordCell = wordCellsGrid[i][j];
+
+      // 現在の列に開いていないマスがあるなら、その列はビンゴしないと判断する
+      if (!wordCell.getIsOpen()) {
+        isBingo = false;
+        break;
+      }
+    }
+
+    if (isBingo) return true;
+  }
+
+  return false;
 };
