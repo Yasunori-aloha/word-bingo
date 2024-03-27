@@ -5,7 +5,7 @@ import { WordCells } from "../types/wordCells";
  * 標準入力から必要データを準備する。
  *
  * @param inputs 標準入力データ
- * @returns [選ばれた単語群の配列, ビンゴの単語群]
+ * @returns [ビンゴサイズ, 選ばれた単語群の配列, ビンゴの単語群]
  */
 export const setWordsAndCells = (
   inputs: string[]

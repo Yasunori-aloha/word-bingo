@@ -10,9 +10,9 @@ exports.openCells = void 0;
  */
 const openCells = (choiceWords, wordCells) => {
   choiceWords.forEach((choiceWord) => {
-    const wordcell = wordCells[choiceWord];
-    if (!wordcell) return;
-    wordcell.cellOpen();
+    const wordCell = wordCells[choiceWord];
+    if (!wordCell) return;
+    wordCell.cellOpen();
   });
 };
 exports.openCells = openCells;
