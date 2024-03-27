@@ -3,7 +3,8 @@
     "target": "es2022",
     "outDir": "./dist",
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "module": "CommonJS"
   },
   "include": ["src/main.ts"]
 }
