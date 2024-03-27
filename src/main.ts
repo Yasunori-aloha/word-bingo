@@ -18,7 +18,6 @@ const main = (inputs: string[]): void => {
   const isBingo = judgeBingo(bingoSize, wordCells);
 
   // ビンゴ結果を出力
-
   if (isBingo) {
     console.log("yes");
   } else {

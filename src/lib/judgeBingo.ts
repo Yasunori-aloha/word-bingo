@@ -1,4 +1,3 @@
-import { WordCell } from "../class/wordCell";
 import { WordCells } from "../types/wordCells";
 
 /**
