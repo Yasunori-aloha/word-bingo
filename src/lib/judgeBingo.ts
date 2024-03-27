@@ -70,12 +70,20 @@ export const judgeBingo = (
   if (judgeVerticalAndHorizontal((i, j) => wordCellsGrid[j][i].getIsOpen()))
     return true;
 
-  // 主対角線(左上から右下への斜め)の確認 ※ビンゴしている列があるなら後続処理を中断
+  /**
+   * 主対角線(左上から右下への斜め)の確認 ※ビンゴしている列があるなら後続処理を中断
+   * サイズが3のビンゴなら左上は[0,0]、真ん中は[1,1]、右下は[2,2]となり、
+   * 1・2番の添え字が同値になる。
+   */
   if (judgeDiagonal((i) => wordCellsGrid[i][i].getIsOpen())) return true;
 
-  // 副対角線(右上から左下への斜め)の確認
+  /**
+   * 副対角線(右上から左下への斜め)の確認
+   * サイズが3のビンゴなら右上は[0,2]、真ん中は[1,1]、左下は[2,0]となり、
+   * 2番目の添え字が最大値から１ずつ減少していく。
+   */
   return judgeDiagonal((i) => {
     const maxIndex = bingoSize - i - 1;
-    return wordCellsGrid[maxIndex][i].getIsOpen();
+    return wordCellsGrid[i][maxIndex].getIsOpen();
   });
 };
