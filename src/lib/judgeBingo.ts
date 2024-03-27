@@ -46,6 +46,22 @@ export const judgeBingo = (
     return false;
   };
 
+  /**
+   * どちらかの対角線の単語マスを確認し、ビンゴしているか判定。
+   *
+   * @param bingoSize ビンゴの大きさ
+   * @param wordCellIsOpen 単語マスが空いているかどうか
+   */
+  const judgeDiagonal = (wordCellIsOpen: (i: number) => boolean) => {
+    for (let i = 0; i < bingoSize; i++) {
+      if (!wordCellIsOpen(i)) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
   // 横(列)の確認 ※ビンゴしている列があるなら後続処理を中断
   if (judgeVerticalAndHorizontal((i, j) => wordCellsGrid[i][j].getIsOpen()))
     return true;
@@ -54,30 +70,12 @@ export const judgeBingo = (
   if (judgeVerticalAndHorizontal((i, j) => wordCellsGrid[j][i].getIsOpen()))
     return true;
 
-  // 主対角線(左上から右下への斜め)の確認
-  let isMainDiagonalBingo = true;
-  for (let i = 0; i < bingoSize; i++) {
-    const wordCell = wordCellsGrid[i][i];
-
-    if (!wordCell.getIsOpen()) {
-      isMainDiagonalBingo = false;
-      break;
-    }
-  }
-
-  if (isMainDiagonalBingo) return true;
+  // 主対角線(左上から右下への斜め)の確認 ※ビンゴしている列があるなら後続処理を中断
+  if (judgeDiagonal((i) => wordCellsGrid[i][i].getIsOpen())) return true;
 
   // 副対角線(右上から左下への斜め)の確認
-  let isAntiDiagonalBingo = true;
-  for (let i = 0; i < bingoSize; i++) {
+  return judgeDiagonal((i) => {
     const maxIndex = bingoSize - i - 1;
-    const wordCell = wordCellsGrid[maxIndex][i];
-
-    if (!wordCell.getIsOpen()) {
-      isAntiDiagonalBingo = false;
-      break;
-    }
-  }
-
-  return isAntiDiagonalBingo;
+    return wordCellsGrid[maxIndex][i].getIsOpen();
+  });
 };
