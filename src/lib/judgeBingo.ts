@@ -53,7 +53,8 @@ export const judgeBingo = (
   // 副対角線(右上から左下への斜め)の確認
   let isAntiDiagonalBingo = true;
   for (let i = 0; i < bingoSize; i++) {
-    const wordCell = wordCellsGrid[i][i];
+    const maxIndex = bingoSize - i - 1;
+    const wordCell = wordCellsGrid[maxIndex][i];
 
     if (!wordCell.getIsOpen()) {
       isAntiDiagonalBingo = false;
